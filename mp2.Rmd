@@ -19,4 +19,6 @@ load("contributions.rda")
 
 ```
 
-> Word count: `r wordcountaddin::word_count()`
+```{r, message = FALSE}
+house_elections %>%
+  filter(state == "VA")
