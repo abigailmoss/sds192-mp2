@@ -20,5 +20,9 @@ load("contributions.rda")
 ```
 
 ```{r, message = FALSE}
-house_elections %>%
-  filter(state == "VA")
+candidates %>%
+  filter(cand_office == "S", cand_office_state == "VA") %>%
+  mutate(total = sum(n())) %>%
+  group_by(cand_election_yr) 
+  
+  
