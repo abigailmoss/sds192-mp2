@@ -1,6 +1,6 @@
 ---
 title: "Mini-Project 2"
-author: "Abby Moss"
+author: "Abby Moss and Elise Schatzki-McClain"
 date: "2019-03-24"
 output: 
   html_document:
@@ -20,9 +20,19 @@ load("contributions.rda")
 ```
 
 ```{r, message = FALSE}
-candidates %>%
-  filter(cand_office == "S", cand_office_state == "VA") %>%
-  mutate(total = sum(n())) %>%
-  group_by(cand_election_yr) 
-  
-  
+
+
+house_election <- house_elections %>%
+  filter(state %in% c("CO", "FL", "IA", "MI", "MN", "OH", "NV", "NH", "NC", "PA","VA", "WI")) %>%
+  group_by(state)%>%
+  mutate(total_prim = sum(primary_votes), total_gen = sum(general_votes)) %>%
+  mutate(prim_prop=primary_votes/total_prim, gen_prop=general_votes/total_gen)
+
+
+ggplot(house_election, aes(x=factor(state), y = prim_prop, fill=party)) + 
+    geom_bar(stat = "identity") +
+    scale_y_continuous(limits = c(0, 1), expand = c(0,0))
+ggplot(house_election, aes(x=factor(state), y = gen_prop, fill=party)) + 
+    geom_bar(stat = "identity") +
+    scale_y_continuous(limits = c(0, 1), expand = c(0,0))
+```
