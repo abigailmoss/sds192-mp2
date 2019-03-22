@@ -31,8 +31,10 @@ house_election <- house_elections %>%
 
 ggplot(house_election, aes(x=factor(state), y = prim_prop, fill=party)) + 
     geom_bar(stat = "identity") +
-    scale_y_continuous(limits = c(0, 1), expand = c(0,0))
+    scale_y_continuous(limits = c(0, 1), expand = c(0,0)) + 
+    labs(x = "State", y = "Percentage", title = "Primary Election")
 ggplot(house_election, aes(x=factor(state), y = gen_prop, fill=party)) + 
     geom_bar(stat = "identity") +
-    scale_y_continuous(limits = c(0, 1), expand = c(0,0))
+    scale_y_continuous(limits = c(0, 1), expand = c(0,0)) +
+    labs(x = "State", y = "Percentage", title = "General Election")
 ```
