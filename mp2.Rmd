@@ -25,23 +25,20 @@ load("contributions.rda")
 house_election_prim <- house_elections %>%
   filter(state %in% c("CO", "FL", "IA", "MI", "MN", "OH", "NV", "NH", "NC", "PA","VA", "WI"), party %in% c("D", "R")) %>%
   group_by(state)%>%
-  mutate(total_prim = sum(primary_votes)) %>%
-  mutate(prim_prop=primary_votes/total_prim)
+  mutate(total_prim = sum(primary_votes), total_gen = sum(general_votes)) %>%
+  mutate(prim_prop=primary_votes/total_prim, gen_prop=general_votes/total_gen)
+
+house_election_gen <- house_elections %>%
+  filter(state %in% c("CO", "FL", "IA", "MI", "MN", "OH", "NV", "NH", "NC", "PA","VA", "WI"), party %in% c("D", "R", "G", "I", "L", "A", "U", "W")) %>%
+  group_by(state)%>%
+  mutate(total_prim = sum(primary_votes), total_gen = sum(general_votes)) %>%
+  mutate(prim_prop=primary_votes/total_prim, gen_prop=general_votes/total_gen)
 
 ggplot(house_election_prim, aes(x=factor(state), y = prim_prop, fill=party)) + 
     geom_bar(stat = "identity") +
     scale_y_continuous(limits = c(0, 1), expand = c(0,0)) + 
     labs(x = "State", y = "Percentage", title = "Primary Election") +
     scale_fill_discrete(name = "Political Party", labels = c("Democratic Party", "Republican Party"))
-
-
-
-house_election_gen <- house_elections %>%
-  filter(state %in% c("CO", "FL", "IA", "MI", "MN", "OH", "NV", "NH", "NC", "PA","VA", "WI"), party %in% c("D", "R", "G", "I", "L", "A", "U", "W")) %>%
-  group_by(state)%>%
-  mutate(total_gen = sum(general_votes)) %>%
-  mutate(gen_prop=general_votes/total_gen)
-
 ggplot(house_election_gen, aes(x=factor(state), y = gen_prop, fill=party)) + 
     geom_bar(stat = "identity") +
     scale_y_continuous(limits = c(0, 1), expand = c(0,0)) +
