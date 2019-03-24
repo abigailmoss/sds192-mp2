@@ -19,29 +19,49 @@ load("contributions.rda")
 
 ```
 
+
 ```{r, message = FALSE}
+parties_gen <- c("D", "R", "G", "I", "L", "A", "U", "W")
+parties_prim <- c("D", "R")
+
+#filter out votes in swing states by party
+#Parameter depends on whether we are looking at the primaries (only democrats and republicans) or general
+votes_function <- function(parties) {
+  house_elections %>%
+    filter(state %in% c("CO", "FL", "IA", "MI", "MN", "OH", "NV", "NH", "NC", "PA","VA", "WI"), party %in% parties) %>%
+    group_by(state) %>%
+    mutate(total_prim = sum(primary_votes), total_gen = sum(general_votes)) %>%
+    mutate(prim_prop = primary_votes/total_prim, gen_prop = general_votes/total_gen)
+}
 
 
-house_election_prim <- house_elections %>%
-  filter(state %in% c("CO", "FL", "IA", "MI", "MN", "OH", "NV", "NH", "NC", "PA","VA", "WI"), party %in% c("D", "R")) %>%
-  group_by(state)%>%
-  mutate(total_prim = sum(primary_votes), total_gen = sum(general_votes)) %>%
-  mutate(prim_prop=primary_votes/total_prim, gen_prop=general_votes/total_gen)
-
-house_election_gen <- house_elections %>%
-  filter(state %in% c("CO", "FL", "IA", "MI", "MN", "OH", "NV", "NH", "NC", "PA","VA", "WI"), party %in% c("D", "R", "G", "I", "L", "A", "U", "W")) %>%
-  group_by(state)%>%
-  mutate(total_prim = sum(primary_votes), total_gen = sum(general_votes)) %>%
-  mutate(prim_prop=primary_votes/total_prim, gen_prop=general_votes/total_gen)
-
-ggplot(house_election_prim, aes(x=factor(state), y = prim_prop, fill=party)) + 
+ggplot(votes_function(parties_prim), aes(x=factor(state), y = prim_prop, fill=party)) + 
     geom_bar(stat = "identity") +
+    coord_flip() +
     scale_y_continuous(limits = c(0, 1), expand = c(0,0)) + 
-    labs(x = "State", y = "Percentage", title = "Primary Election") +
-    scale_fill_discrete(name = "Political Party", labels = c("Democratic Party", "Republican Party"))
-ggplot(house_election_gen, aes(x=factor(state), y = gen_prop, fill=party)) + 
+    labs(x = "State", y = "Percentage", title = "Senate Votes by Party in the Primary Election") +
+    scale_fill_discrete(name = "Political Party", labels = c("Democratic Party", "Republican Party"))+
+    #scale_fill_manual(values=c("royalblue3","red3"))+
+    theme(axis.text.y = element_text(size=12,face='bold',color='slategray'), 
+          axis.text.x = element_text(size=12,face='bold',color='slategray'),
+          axis.title.x = element_text(size=16,face='bold'),
+          axis.title.y = element_text(size=16,face='bold'),
+          title =element_text(size=16, face='bold'),
+          panel.grid = element_blank(),panel.grid.major = element_blank(),
+          panel.background = element_blank())
+
+ggplot(votes_function(parties_gen), aes(x=factor(state), y = gen_prop, fill=party)) + 
     geom_bar(stat = "identity") +
+    coord_flip() +
     scale_y_continuous(limits = c(0, 1), expand = c(0,0)) +
-    labs(x = "State", y = "Percentage", title = "General Election") +
+    labs(x = "State", y = "Percentage", title = "Senates votes by Party in the General Election") +
+    #scale_fill_manual(values=c("darkorange", "royalblue3", "seagreen3", "purple3", "darkgoldenrod1", "red3", "darksalmon", "darkslategray"))+
+    theme(axis.text.y = element_text(size=12,face='bold',color='slategray'),
+          axis.text.x = element_text(size=12,face='bold',color='slategray'),
+          axis.title.x = element_text(size=16,face='bold'),
+          axis.title.y = element_text(size=16,face='bold'),
+          title = element_text(size=16, face='bold'),
+          panel.grid = element_blank(),panel.grid.major = element_blank(),
+          panel.background = element_blank())+
     scale_fill_discrete(name = "Political Party", labels = c("American Delta Party", "Democratic Party", "Green Party", "Independent", "Libertarian Party", "Republican Party", "United States Pacifist Party", "Workers Democratic Party"))
 ```
