@@ -40,8 +40,7 @@ ggplot(votes_function(parties_prim), aes(x=factor(state), y = prim_prop, fill=pa
     coord_flip() +
     scale_y_continuous(limits = c(0, 1), expand = c(0,0)) + 
     labs(x = "State", y = "Percentage", title = "Senate Votes by Party in the Primary Election") +
-    scale_fill_discrete(name = "Political Party", labels = c("Democratic Party", "Republican Party"))+
-    #scale_fill_manual(values=c("royalblue3","red3"))+
+    scale_fill_manual(values=c("royalblue3","red3"))+
     theme(axis.text.y = element_text(size=12,face='bold',color='slategray'), 
           axis.text.x = element_text(size=12,face='bold',color='slategray'),
           axis.title.x = element_text(size=16,face='bold'),
@@ -55,13 +54,13 @@ ggplot(votes_function(parties_gen), aes(x=factor(state), y = gen_prop, fill=part
     coord_flip() +
     scale_y_continuous(limits = c(0, 1), expand = c(0,0)) +
     labs(x = "State", y = "Percentage", title = "Senates votes by Party in the General Election") +
-    #scale_fill_manual(values=c("darkorange", "royalblue3", "seagreen3", "purple3", "darkgoldenrod1", "red3", "darksalmon", "darkslategray"))+
+    scale_fill_manual(values=c("darkorange", "royalblue3", "seagreen3", "purple3", "darkgoldenrod1", "red3", "darksalmon", "darkslategray"))+
     theme(axis.text.y = element_text(size=12,face='bold',color='slategray'),
           axis.text.x = element_text(size=12,face='bold',color='slategray'),
           axis.title.x = element_text(size=16,face='bold'),
           axis.title.y = element_text(size=16,face='bold'),
           title = element_text(size=16, face='bold'),
           panel.grid = element_blank(),panel.grid.major = element_blank(),
-          panel.background = element_blank())+
-    scale_fill_discrete(name = "Political Party", labels = c("American Delta Party", "Democratic Party", "Green Party", "Independent", "Libertarian Party", "Republican Party", "United States Pacifist Party", "Workers Democratic Party"))
+          panel.background = element_blank())
+    
 ```
